@@ -1,0 +1,32 @@
+input ProductInput {
+  name: String!
+  description: String
+  price: Int!
+  category: String!
+}
+
+input ProductUpdateInput {
+  name: String
+  description: String
+  price: Int
+  category: String
+}
+
+type Product {
+  id: ID!
+  name: String!
+  description: String
+  price: Int!
+  category: String!
+  vector: [Float!]!
+}
+
+type Query {
+  getProduct(id: ID!): Product
+}
+
+type Mutation {
+  createProduct(productData: ProductInput!): Product!
+  updateProduct(id: ID!, productData: ProductUpdateInput!): Product!
+  deleteProduct(id: ID!): Boolean!
+}
