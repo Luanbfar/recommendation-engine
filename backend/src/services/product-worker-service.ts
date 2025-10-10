@@ -2,7 +2,7 @@ import type { EmbeddingService } from "../interfaces/embedding.ts";
 import type { ProductStagingRepository } from "../interfaces/product.ts";
 import type { ProductRepository } from "../interfaces/product.ts";
 
-export class ProductEmbeddingWorker {
+export class ProductEmbeddingWorkerService {
   private stagingRepo: ProductStagingRepository;
   private productRepo: ProductRepository;
   private embeddingService: EmbeddingService;
@@ -94,7 +94,7 @@ export class ProductEmbeddingWorker {
   }
 
   start(): void {
-    console.log(`Starting worker with ${this.intervalMs}ms interval...`);
+    console.log(`Starting worker service with ${this.intervalMs}ms interval...`);
     this.intervalId = setInterval(() => this.processBatch(), this.intervalMs);
 
     this.processBatch();
@@ -104,7 +104,7 @@ export class ProductEmbeddingWorker {
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = undefined;
-      console.log("Worker stopped");
+      console.log("Worker service stopped");
     }
   }
 }

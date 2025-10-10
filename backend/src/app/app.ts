@@ -7,8 +7,7 @@ import { PostgresProductRepository, RedisProductStagingRepository } from "../rep
 import { PostgresUserRepository } from "../repositories/user-repository.ts";
 import { ProductService } from "../services/product-service.ts";
 import { UserService } from "../services/user-service.ts";
-import { ProductEmbeddingWorker } from "../services/worker.ts";
-import { BedrockEmbeddingService } from "../services/embedding-service.ts";
+import { WorkerManager } from "../services/worker-manager.ts";
 
 console.log("App is running...");
 
@@ -35,17 +34,18 @@ const userService = new UserService(userRepository);
 const productRepository = new PostgresProductRepository(ProductModel, PostgresDataSource.manager);
 const productStagingRepository = new RedisProductStagingRepository(redisClient as RedisClientType);
 const productService = new ProductService(productRepository, productStagingRepository);
-const embeddingService = new BedrockEmbeddingService(5);
 
-// Worker
-const worker = new ProductEmbeddingWorker(productStagingRepository, productRepository, embeddingService, 5, 30000);
-
-worker.start();
+const workerManager = new WorkerManager();
+workerManager.start("productWorker", "product-worker-thread");
 
 // Graceful shutdown
 const shutdown = async () => {
-  console.log("\nShutting down worker...");
-  worker.stop();
+  try {
+    await workerManager.stopAll();
+    console.log("Worker(s) stopped");
+  } catch (error) {
+    console.error("Error stopping worker:", error);
+  }
 
   try {
     await redisClient.quit();
