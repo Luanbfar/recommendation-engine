@@ -1,10 +1,11 @@
 import { DataSource } from "typeorm";
 import { UserModel } from "../models/user-model.ts";
 import { ProductModel } from "../models/product-model.ts";
+import { postgresDbUrl } from "../config/env.ts";
 
 const PostgresDataSource = new DataSource({
   type: "postgres",
-  url: process.env.POSTGRES_DB_URL ?? "localhost",
+  url: postgresDbUrl,
   entities: [UserModel, ProductModel],
   synchronize: true,
 });

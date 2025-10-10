@@ -1,4 +1,5 @@
 input ProductInput {
+  id: ID!
   name: String!
   description: String
   price: Int!

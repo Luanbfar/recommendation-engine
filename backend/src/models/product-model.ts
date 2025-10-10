@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import type { Product } from "../interfaces/product.ts";
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import type { Product, ProductStaging } from "../interfaces/product.ts";
 
 @Entity("products")
 export class ProductModel implements Product {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn("uuid")
   id!: string;
   @Column({ type: "varchar", length: 200 })
   name!: string;

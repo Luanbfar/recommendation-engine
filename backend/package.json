@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && mkdir -p dist/graphql/schemas && cp -R src/graphql/schemas/*.graphql dist/graphql/schemas/",
     "start": "node ./dist/index.js",
     "dev": "tsx --watch src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,9 +15,12 @@
   "type": "module",
   "dependencies": {
     "@apollo/server": "^5.0.0",
+    "@langchain/aws": "^0.1.15",
     "dotenv": "^17.2.3",
     "graphql": "^16.11.0",
+    "langchain": "^0.3.35",
     "pg": "^8.16.3",
+    "redis": "^5.8.3",
     "typeorm": "^0.3.27"
   },
   "devDependencies": {
