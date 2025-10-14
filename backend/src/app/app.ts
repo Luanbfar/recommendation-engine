@@ -26,14 +26,14 @@ try {
 
 // Dependency Injection
 
-// User
-const userRepository = new PostgresUserRepository(UserModel, PostgresDataSource.manager);
-const userService = new UserService(userRepository);
-
 // Product
 const productRepository = new PostgresProductRepository(ProductModel, PostgresDataSource.manager);
 const productStagingRepository = new RedisProductStagingRepository(redisClient as RedisClientType);
 const productService = new ProductService(productRepository, productStagingRepository);
+
+// User
+const userRepository = new PostgresUserRepository(UserModel, PostgresDataSource.manager);
+const userService = new UserService(userRepository, productRepository);
 
 const workerManager = new WorkerManager();
 workerManager.start("productWorker", "product-worker-thread");

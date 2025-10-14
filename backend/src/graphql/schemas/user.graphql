@@ -8,6 +8,11 @@ input UserUpdateInput {
   email: String
 }
 
+input UserProduct {
+  productId: ID!
+  amount: Int!
+}
+
 type User {
   id: Int!
   name: String!
@@ -18,6 +23,8 @@ type User {
 type Query {
   getUser(id: Int!): User
   getUserByEmail(email: String!): User
+  getUserTaste(id: Int!, userProducts: [UserProduct!]!): User
+  getUserRecommendations(id: Int!, limit: Int!): [ID!]!
 }
 
 type Mutation {
