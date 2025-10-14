@@ -1,13 +1,10 @@
-import type { ProductRepository } from "../interfaces/product.ts";
 import type { User, UserRepository } from "../interfaces/user.ts";
 
 export class UserService {
   private userRepo: UserRepository;
-  private productRepo: ProductRepository;
 
-  constructor(userRepo: UserRepository, productRepo: ProductRepository) {
+  constructor(userRepo: UserRepository) {
     this.userRepo = userRepo;
-    this.productRepo = productRepo;
   }
 
   private validateEmail(email: string): boolean {
@@ -29,38 +26,6 @@ export class UserService {
     const user = await this.userRepo.createUser(userData);
     user.taste = user.taste || [];
     return user;
-  }
-
-  async getUserTaste(id: number, userProducts: Map<string, number>): Promise<User | null> {
-    const user = await this.userRepo.findUserById(id);
-    if (user) {
-      for (const product of userProducts.keys()) {
-        const fetchedProduct = await this.productRepo.findProductById(product);
-        const productVector = fetchedProduct?.vector;
-        if (productVector) {
-          if (!user.taste) {
-            user.taste = productVector;
-          } else {
-            for (let i = 0; i < productVector.length; i++) {
-              user.taste[i] =
-                (user.taste[i]! * (1 - userProducts.get(product)!) + productVector[i]! * userProducts.get(product)!) /
-                (1 + userProducts.get(product)!);
-            }
-          }
-        }
-      }
-      return user;
-    }
-    return null;
-  }
-
-  async getUserRecommendations(id: number, limit: number): Promise<string[]> {
-    const user = await this.userRepo.findUserById(id);
-    if (!user || !user.taste) {
-      throw new Error("User not found or has no taste profile");
-    }
-    const similarProducts = await this.productRepo.findSimilarProducts(user.taste, limit);
-    return similarProducts.map((p) => p.id);
   }
 
   async getUserById(id: number): Promise<User | null> {

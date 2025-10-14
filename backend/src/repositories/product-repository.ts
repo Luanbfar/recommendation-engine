@@ -13,11 +13,11 @@ export class PostgresProductRepository extends Repository<Product> implements Pr
     const product = this.create(productData);
     return await this.save(product);
   }
-  async findSimilarProducts(vector: number[], limit: number): Promise<Product[]> {
+  async findSimilarProducts(vector: string, limit: number): Promise<Product[]> {
     return await this.query(
       `
       SELECT id, name, vector <-> $1 AS distance
-      FROM product
+      FROM products
       ORDER BY distance ASC
       LIMIT $2
       `,

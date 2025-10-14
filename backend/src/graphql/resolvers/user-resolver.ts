@@ -1,7 +1,6 @@
 import { GraphQLError } from "graphql";
-import { userService } from "../../app/app.ts";
+import { recommendationService, userService } from "../../app/app.ts";
 import type { User } from "../../interfaces/user.ts";
-import { get } from "http";
 
 export const userResolvers = {
   Query: {
@@ -20,18 +19,18 @@ export const userResolvers = {
         throw new GraphQLError(error.message || "Failed to fetch user by email");
       }
     },
-    async getUserTaste(_: any, args: { id: number; userProducts: [{ id: string; amount: number }] }) {
+    async getUserTaste(_: any, args: { email: string; userProducts: [{ productId: string; amount: number }] }) {
       try {
-        const userProductsMap = new Map<string, number>(args.userProducts.map((p) => [p.id, p.amount]));
+        const userProductsMap = new Map<string, number>(args.userProducts.map((p) => [p.productId, p.amount]));
 
-        return await userService.getUserTaste(args.id, userProductsMap);
+        return await recommendationService.getUserTaste(args.email, userProductsMap);
       } catch (error: any) {
         throw new GraphQLError(error.message || "Failed to fetch user taste");
       }
     },
-    async getUserRecommendations(_: any, args: { id: number; limit: number }) {
+    async getUserRecommendations(_: any, args: { email: string; limit: number }) {
       try {
-        return await userService.getUserRecommendations(args.id, args.limit);
+        return await recommendationService.getUserRecommendations(args.email, args.limit);
       } catch (error: any) {
         throw new GraphQLError(error.message || "Failed to fetch user recommendations");
       }

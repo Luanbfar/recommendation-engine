@@ -17,6 +17,10 @@ export class ProductService {
     return product;
   }
 
+  async getSimilarProducts(vector: string, limit: number): Promise<Product[]> {
+    return await this.productRepository.findSimilarProducts(vector, limit);
+  }
+
   async createProduct(productData: Partial<Product>): Promise<ProductStaging> {
     if (!productData.id || !productData.name || !productData.price || !productData.category) {
       throw new Error("Id, Name, price, and category are required");

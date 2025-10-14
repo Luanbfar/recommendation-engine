@@ -8,6 +8,7 @@ import { PostgresUserRepository } from "../repositories/user-repository.ts";
 import { ProductService } from "../services/product-service.ts";
 import { UserService } from "../services/user-service.ts";
 import { WorkerManager } from "../services/worker-manager.ts";
+import { RecommendationService } from "../services/recomendation-service.ts";
 
 console.log("App is running...");
 
@@ -33,10 +34,15 @@ const productService = new ProductService(productRepository, productStagingRepos
 
 // User
 const userRepository = new PostgresUserRepository(UserModel, PostgresDataSource.manager);
-const userService = new UserService(userRepository, productRepository);
+const userService = new UserService(userRepository);
+
+// Recommendation
+const recommendationService = new RecommendationService(productService, userService);
 
 const workerManager = new WorkerManager();
 workerManager.start("productWorker", "product-worker-thread");
+
+export { userService, productService, recommendationService };
 
 // Graceful shutdown
 const shutdown = async () => {
@@ -66,5 +72,3 @@ const shutdown = async () => {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
-
-export { userService, productService };

@@ -23,8 +23,8 @@ type User {
 type Query {
   getUser(id: Int!): User
   getUserByEmail(email: String!): User
-  getUserTaste(id: Int!, userProducts: [UserProduct!]!): User
-  getUserRecommendations(id: Int!, limit: Int!): [ID!]!
+  getUserTaste(email: String!, userProducts: [UserProduct!]!): User
+  getUserRecommendations(email: String!, limit: Int!): [ID!]!
 }
 
 type Mutation {
