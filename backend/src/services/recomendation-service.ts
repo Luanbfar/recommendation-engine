@@ -21,7 +21,7 @@ export class RecommendationService {
         if (!fetchedProduct) continue;
         const productVector = fetchedProduct.vector;
         if (productVector) {
-          if (!user.taste) {
+          if (user.taste.length < 1) {
             user.taste = productVector;
           } else {
             for (let i = 0; i < productVector.length; i++) {
