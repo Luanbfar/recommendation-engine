@@ -1,4 +1,4 @@
-import { bedrockAccessKey, bedrockModelId, bedrockRegion, bedrockSecretKey } from "../config/env.ts";
+import {config} from "../config/env.ts";
 import type { EmbeddingResult, EmbeddingService } from "../interfaces/embedding.ts";
 import { BedrockEmbeddings } from "@langchain/aws";
 import type { ProductStaging } from "../interfaces/product.ts";
@@ -9,13 +9,13 @@ export class BedrockEmbeddingService implements EmbeddingService {
 
   constructor(maxConcurrent: number = 5) {
     this.embeddings = new BedrockEmbeddings({
-      model: bedrockModelId,
-      region: bedrockRegion,
+      model: config.bedrock.modelId,
+      region: config.bedrock.region,
       maxConcurrency: maxConcurrent,
       maxRetries: 3,
       credentials: {
-        accessKeyId: bedrockAccessKey,
-        secretAccessKey: bedrockSecretKey,
+        accessKeyId: config.bedrock.accessKey,
+        secretAccessKey: config.bedrock.secretKey,
       },
     });
     this.maxConcurrent = maxConcurrent;

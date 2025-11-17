@@ -1,8 +1,8 @@
 import { createClient } from "redis";
-import { redisUrl } from "../config/env.ts";
+import { config } from "../config/env.ts";
 
 const redisClient = createClient({
-  url: redisUrl,
+  url: config.database.redisUrl,
 });
 
 export default redisClient;
