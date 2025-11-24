@@ -24,7 +24,7 @@ export class WorkerManager {
 
     const restartAttempts = new Map<string, number>();
 
-    const startWorker = () => {
+    const createAndStartWorker = () => {
       const worker = new Worker(workerPath, {
         workerData: data,
       });
@@ -46,7 +46,7 @@ export class WorkerManager {
             `[WorkerManager] Restarting ${workerName} (attempt ${attempts + 1})`
           );
           restartAttempts.set(workerName, attempts + 1);
-          setTimeout(() => startWorker(), 5000);
+          setTimeout(() => createAndStartWorker(), 5000);
         } else {
           console.error(
             `[WorkerManager] Max restart attempts reached for ${workerName}`
@@ -65,7 +65,7 @@ export class WorkerManager {
           if (attempts < this.maxRestartAttempts) {
             console.log(`[WorkerManager] Restarting ${workerName} after exit`);
             restartAttempts.set(workerName, attempts + 1);
-            setTimeout(() => startWorker(), 2000);
+            setTimeout(() => createAndStartWorker(), 2000);
           }
         }
       });
@@ -76,7 +76,7 @@ export class WorkerManager {
       );
     };
 
-    startWorker();
+    createAndStartWorker();
   }
 
   async stop(workerName: string, timeoutMs: number = 10000): Promise<number> {
