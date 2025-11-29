@@ -19,20 +19,31 @@ export const userResolvers = {
         throw new GraphQLError(error.message || "Failed to fetch user by email");
       }
     },
+
     async getUserTaste(_: any, args: { email: string; userProducts: [{ productId: string; amount: number }] }) {
       try {
-        const userProductsMap = new Map<string, number>(args.userProducts.map((p) => [p.productId, p.amount]));
-
+        const userProductsMap = new Map<string, number>(
+          args.userProducts.map((p) => [p.productId, p.amount])
+        );
         return await recommendationService.getUserTaste(args.email, userProductsMap);
       } catch (error: any) {
         throw new GraphQLError(error.message || "Failed to fetch user taste");
       }
     },
+
     async getUserRecommendations(_: any, args: { email: string; limit: number }) {
       try {
         return await recommendationService.getUserRecommendations(args.email, args.limit);
       } catch (error: any) {
         throw new GraphQLError(error.message || "Failed to fetch user recommendations");
+      }
+    },
+
+    async getSimilarProducts(_: any, args: { productId: string; limit: number }) {
+      try {
+        return await recommendationService.getSimilarProducts(args.productId, args.limit);
+      } catch (error: any) {
+        throw new GraphQLError(error.message || "Failed to fetch similar products");
       }
     },
   },
@@ -60,6 +71,17 @@ export const userResolvers = {
         return await userService.deleteUser(args.id);
       } catch (error: any) {
         throw new GraphQLError(error.message || "Failed to delete user");
+      }
+    },
+
+    async updateUserTaste(_: any, args: { email: string; userProducts: [{ productId: string; amount: number }] }) {
+      try {
+        const userProductsMap = new Map<string, number>(
+          args.userProducts.map((p) => [p.productId, p.amount])
+        );
+        return await recommendationService.getUserTaste(args.email, userProductsMap);
+      } catch (error: any) {
+        throw new GraphQLError(error.message || "Failed to update user taste");
       }
     },
   },

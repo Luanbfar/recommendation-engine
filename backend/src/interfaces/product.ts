@@ -24,6 +24,9 @@ export interface ProductRepository {
   findSimilarProducts(vector: string, limit: number): Promise<Product[]>;
   updateProduct(id: string, updateData: Partial<Product>): Promise<Product | null>;
   deleteProduct(id: string): Promise<boolean>;
+ findAllProducts(limit?: number): Promise<Product[]>;
+  findRecentProducts(limit?: number): Promise<Product[]>;
+  findRandomProducts(limit?: number): Promise<Product[]>;
 }
 
 export interface ProductStagingRepository {

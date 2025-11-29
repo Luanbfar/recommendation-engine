@@ -48,7 +48,52 @@ export class ProductService {
     }
     return product;
   }
+
   async deleteProduct(id: string): Promise<boolean> {
     return await this.productRepository.deleteProduct(id);
+  }
+
+  async getAllProducts(limit: number = 50): Promise<Product[]> {
+    try {
+      const products = await this.productRepository.findAllProducts(limit);
+      return products.map(product => ({
+        ...product,
+        vector: product.vector || []
+      }));
+    } catch (error) {
+      console.error('Error fetching all products:', error);
+      return [];
+    }
+  }
+
+  async getRecentProducts(limit: number = 10): Promise<Product[]> {
+    try {
+      const products = await this.productRepository.findRecentProducts(limit);
+      return products.map(product => ({
+        ...product,
+        vector: product.vector || []
+      }));
+    } catch (error) {
+      console.error('Error fetching recent products:', error);
+      return [];
+    }
+  }
+
+  async getRandomProducts(limit: number = 10): Promise<Product[]> {
+    try {
+      const products = await this.productRepository.findRandomProducts(limit);
+      return products.map(product => ({
+        ...product,
+        vector: product.vector || []
+      }));
+    } catch (error) {
+      console.error('Error fetching random products:', error);
+      return [];
+    }
+  }
+
+  async getPopularProducts(limit: number = 10): Promise<Product[]> {
+    // Por enquanto, retorna produtos aleatórios, ent futuramente se necessario, fazer uma logica de popularidade
+    return await this.getRandomProducts(limit);
   }
 }

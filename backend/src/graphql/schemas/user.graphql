@@ -25,10 +25,12 @@ type Query {
   getUserByEmail(email: String!): User
   getUserTaste(email: String!, userProducts: [UserProduct!]!): User
   getUserRecommendations(email: String!, limit: Int!): [ID!]!
+  getSimilarProducts(productId: ID!, limit: Int!): [ID!]! 
 }
 
 type Mutation {
   createUser(userData: UserInput): User!
   updateUser(id: Int!, userData: UserUpdateInput): User!
   deleteUser(id: Int!): Boolean!
+  updateUserTaste(email: String!, userProducts: [UserProduct!]!): User!  
 }

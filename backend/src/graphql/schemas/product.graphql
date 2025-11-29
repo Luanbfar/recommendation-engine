@@ -24,6 +24,9 @@ type Product {
 
 type Query {
   getProduct(id: ID!): Product
+  getAllProducts(limit: Int): [Product!]!  
+  getRecentProducts(limit: Int): [Product!]! 
+  getRandomProducts(limit: Int): [Product!]!  
 }
 
 type Mutation {
