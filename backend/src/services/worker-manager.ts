@@ -20,13 +20,14 @@ export class WorkerManager {
     }
 
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const workerPath = path.join(__dirname, `../workers/${workerFileName}.js`);
+   const workerPath = path.join(__dirname, `../../dist/workers/${workerFileName}.js`);
 
     const restartAttempts = new Map<string, number>();
 
     const createAndStartWorker = () => {
       const worker = new Worker(workerPath, {
         workerData: data,
+         execArgv: ['--loader', 'tsx'] , 
       });
 
       worker.on("message", (msg) => {
