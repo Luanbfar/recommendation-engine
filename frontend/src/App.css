@@ -1,0 +1,245 @@
+/* ====== GLOBAL RESET ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, sans-serif;
+}
+
+body {
+  background: #f5f7fa;
+  color: #1a1a1a;
+}
+
+/* ====== APP LAYOUT ====== */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background: #3b82f6;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 4px solid #1d4ed8;
+}
+
+.app-container {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  flex: 1;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ====== BUTTONS ====== */
+.btn,
+.recommendation-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn:hover,
+.recommendation-btn:hover {
+  background: #1d4ed8;
+}
+
+.btn:disabled,
+.recommendation-btn:disabled {
+  background: #93a5cf;
+  cursor: not-allowed;
+}
+
+/* ====== INPUTS ====== */
+.input,
+.textarea,
+.amount-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin: 5px 0 15px 0;
+}
+
+.input:focus,
+.textarea:focus,
+.amount-input:focus {
+  outline: 2px solid #3b82f6;
+}
+
+.textarea {
+  height: 60px;
+  resize: vertical;
+}
+
+/* ====== USER PROFILE ====== */
+.user-profile h2 {
+  margin-bottom: 10px;
+}
+
+.user-info {
+  background: #eef2ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.taste-selector h3 {
+  margin-bottom: 10px;
+}
+
+.product-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-selection-item {
+  background: #f3f4f6;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+}
+
+/* ====== CREATE PRODUCT ====== */
+.create-product h2 {
+  margin-bottom: 10px;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ====== PRODUCT LIST ====== */
+.product-list {
+  margin-top: 30px;
+}
+
+.products-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.product-card {
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.product-price {
+  color: #16a34a;
+}
+
+.product-description {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  color: #666;
+}
+
+/* ====== RECOMMENDATIONS ====== */
+.recommendations {
+  margin-top: 20px;
+}
+
+.recommendations-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 15px;
+}
+
+.recommendation-card {
+  background: #eef6ff;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 5px solid #3b82f6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.recommendation-rank {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #1d4ed8;
+}
+
+.recommendation-description {
+  font-size: 0.9rem;
+  margin: 8px 0;
+}
+
+.recommendation-details {
+  display: flex;
+  justify-content: space-between;
+  color: #444;
+}
+
+.recommendation-id {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.loading {
+  padding: 10px;
+  font-weight: bold;
+}
+
+.empty-state {
+  background: #f3f4f6;
+  padding: 15px;
+  border-radius: 8px;
+  color: #555;
+  text-align: center;
+}
