@@ -1,4 +1,4 @@
-// services/recommendation-service.ts - VERSÃO SEM TS2532
+// services/recommendation-service.ts - VERSÃO CORRIGIDA
 import type { User } from "../interfaces/user.ts";
 import type { ProductService } from "./product-service.ts";
 import type { UserService } from "./user-service.ts";
@@ -6,6 +6,7 @@ import type { UserService } from "./user-service.ts";
 export class RecommendationService {
   private productService: ProductService;
   private userService: UserService;
+  private userProductHistory = new Map<string, string[]>(); 
 
   constructor(productService: ProductService, userService: UserService) {
     this.productService = productService;
@@ -58,6 +59,9 @@ export class RecommendationService {
     const user = await this.userService.getUserByEmail(email);
     if (!user) throw new Error("User not found");
 
+    const productIds = Array.from(userProducts.keys());
+    this.userProductHistory.set(email, productIds);
+
     const tasteVector = await this.calculateUserTaste(userProducts);
 
     if (tasteVector.length > 0) {
@@ -76,16 +80,27 @@ export class RecommendationService {
     }
 
     const vector = `[${user.taste.join(",")}]`;
-    const similarProducts = await this.productService.getSimilarProducts(vector, limit + 5);
+    
+    const similarProducts = await this.productService.getSimilarProducts(vector, limit * 2);
 
-   
-    if (!similarProducts) return [];
+    if (!similarProducts || similarProducts.length === 0) {
+      return await this.getFallbackRecommendations(limit);
+    }
 
     const userProductIds = await this.getUserProductIds(email);
 
     const filteredProducts = similarProducts.filter(
       p => p && p.id && !userProductIds.includes(p.id)
     );
+
+    if (filteredProducts.length < limit) {
+      const remaining = limit - filteredProducts.length;
+      const fallback = await this.getFallbackRecommendations(remaining);
+      return [
+        ...filteredProducts.slice(0, limit).map(p => p.id),
+        ...fallback
+      ].slice(0, limit);
+    }
 
     return filteredProducts.slice(0, limit).map(p => p.id);
   }
@@ -98,10 +113,10 @@ export class RecommendationService {
     return products.map(p => p.id);
   }
 
-  private async getUserProductIds(_: string): Promise<string[]> {
-    return [];
+  private async getUserProductIds(email: string): Promise<string[]> {
+    return this.userProductHistory.get(email) || [];
   }
-//  based em conteudo do produto
+
   async getSimilarProducts(productId: string, limit: number = 5): Promise<string[]> {
     const product = await this.productService.getProductById(productId);
 
